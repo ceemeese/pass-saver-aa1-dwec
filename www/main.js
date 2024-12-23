@@ -1,5 +1,3 @@
-import * as Utils from '/utils/api.js';
-
 window.addEventListener('DOMContentLoaded', (event) => {
 
     let drawData = (data) => {
@@ -12,7 +10,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
           parent.appendChild(child)
         })
       }
-  
+
       const closeCategory = document.getElementById('close-btn')
       const addCategory = document.getElementById('add-btn')
       const submitCategory = document.getElementById('submit-btn')
@@ -20,6 +18,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
       addCategory.addEventListener('click', () => popup.classList.add("show-popup"))
       closeCategory.addEventListener('click', () => popup.classList.remove("show-popup"))
       submitCategory. addEventListener('click', () =>  popup.classList.remove("show-popup"))
+
   
       fetch("http://localhost:3000/categories")
         .then(res => res.json())
@@ -27,6 +26,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     console.log('Hola script principal')
 
-    Utils.postCategory(Utils.datos);
+    postCategory(datos);
 
 })
+
+function checkName() {
+  if(document.addcategory.category.value === '' ) {
+    document.addcategory.send.disabled = true
+  } else {
+    document.addcategory.send.disabled = false
+  }
+}

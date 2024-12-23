@@ -1,8 +1,8 @@
-export const datos = {
+const datos = {
     name: 'Nueva Categoria'
 };
 
-export const postCategory = async(data) => {
+const postCategory = async(data) => {
     try {
         const response = await fetch('http://localhost:3000/categories', {
             method: 'POST',

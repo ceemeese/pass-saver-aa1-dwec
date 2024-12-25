@@ -52,3 +52,11 @@ submitButton.addEventListener("click", (event) => {
     event.preventDefault();
     postCategory();
 });
+
+
+//Evento de eliminar categoria
+const deleteButton = document.querySelector("#del-btn");
+deleteButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  deleteCategory();
+})

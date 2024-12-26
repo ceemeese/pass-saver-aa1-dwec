@@ -65,6 +65,10 @@ const drawData = (data) => {
         }
     });
   });
+
+  getListSites(1).then(data => {
+    drawSites(data);
+  });
 }
 
 
@@ -92,4 +96,41 @@ deleteButton.addEventListener('click', (event) => {
 
   deleteCategory(selectedId);
 })
+
+
+
+const drawSites = (category) => {
+
+  //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
+  let parent = document.getElementsByTagName('tbody')[0];
+  parent.innerHTML = ''; 
+
+  const {
+    sites
+} = category
+
+
+  
+
+  sites.forEach(site => {
+
+    let th = document.createElement('th')
+    let nameSite = document.createElement('td');
+    let userSite = document.createElement('td');
+    let createSite = document.createElement('td');
+    let actions = document.createElement('td');
+
+    parent.appendChild(th)
+    
+    // child.innerText = JSON.stringify(category)
+    nameSite.innerText = site.name;
+    nameSite.setAttribute('data-id', site.id)
+    th.appendChild(nameSite);
+
+
+  })
+}
+
+
+
 

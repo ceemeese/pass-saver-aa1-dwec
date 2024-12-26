@@ -79,5 +79,28 @@ const deleteCategory = async(id) => {
 }
 
 
+//Listar sites
+const getListSites = async(id) => {
+
+    try {
+        const response = await fetch(`http://localhost:3000/categories/${id}`);
+        console.log(response);
+
+        if(response.status === 200) {
+            const data = await response.json()
+            console.log(data);
+            return data;
+        } else if (response.status === 401) {
+            console.log('Hay un error en la petición')
+        } else {
+        console.log('Hubo un error, revisa parámetros')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
 
 

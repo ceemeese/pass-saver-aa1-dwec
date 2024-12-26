@@ -53,10 +53,9 @@ const postCategory = async() => {
 }
 
 
-const id = 103;
 
 //Eliminar categoría
-const deleteCategory = async() => {
+const deleteCategory = async(id) => {
 
     try {
         const response = await fetch(`http://localhost:3000/categories/${id}`, {

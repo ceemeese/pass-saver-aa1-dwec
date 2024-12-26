@@ -1,5 +1,7 @@
 window.addEventListener('DOMContentLoaded', (event) => {
 
+  const selectedId = null;
+
   //Obtener y pintar categorías
   getListCategories().then(data => {
     drawData(data);
@@ -16,12 +18,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
   submitCategory. addEventListener('click', () =>  popup.classList.remove("show-popup"))
 
 
+
   console.log('Hola script principal')
 
 })
 
 
-//Función para pintar las categorías
+//Función para pintar las categorías y que se active para poder seleccionar categorias
 const drawData = (data) => {
 
   //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
@@ -29,13 +32,41 @@ const drawData = (data) => {
   parent.innerHTML = ''; 
 
   data.forEach(category => {
-    let child = document.createElement('li')
+    let child = document.createElement('li');
+    
     // child.innerText = JSON.stringify(category)
-    child.innerText = category.name
-    child.classList.add('list-group-item')
-    parent.appendChild(child)
+    child.innerText = category.name;
+    child.setAttribute('data-id', category.id)
+    child.classList.add('list-group-item');
+    parent.appendChild(child);
   })
+
+  const items = document.querySelectorAll('.list-group-item');
+  const deleteButton = document.getElementById('del-btn');
+
+  items.forEach(item => {
+    item.addEventListener('click', function(event) {
+    
+        if (this.classList.contains('list-group-item-primary')) {
+          // Quitamos la clase activa y reseteamos el selectedId
+          this.classList.remove('list-group-item-primary');
+          selectedId = null;
+          deleteButton.disabled = true;
+          
+        } else {
+          
+          selectedId = this.getAttribute('data-id');
+          document.querySelectorAll('.list-group-item').forEach(el => {
+            el.classList.remove('list-group-item-primary');
+          });
+    
+          this.classList.add('list-group-item-primary');
+          deleteButton.disabled = false;
+        }
+    });
+  });
 }
+
 
 //Función para habilitar/deshabilitar botón de enviar
 function checkName() {
@@ -58,5 +89,7 @@ submitButton.addEventListener("click", (event) => {
 const deleteButton = document.querySelector("#del-btn");
 deleteButton.addEventListener('click', (event) => {
   event.preventDefault();
-  deleteCategory();
+
+  deleteCategory(selectedId);
 })
+

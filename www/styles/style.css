@@ -26,3 +26,6 @@ li {
   cursor: pointer; 
 }
 
+a {
+  padding: 5px;
+}

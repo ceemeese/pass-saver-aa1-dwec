@@ -114,19 +114,33 @@ const drawSites = (category) => {
 
   sites.forEach(site => {
 
-    let th = document.createElement('th')
+    var createdDate = new Date(site.createdAt);
+
+    let trSite = document.createElement('tr')
     let nameSite = document.createElement('td');
     let userSite = document.createElement('td');
     let createSite = document.createElement('td');
     let actions = document.createElement('td');
 
-    parent.appendChild(th)
+    parent.appendChild(trSite)
     
-    // child.innerText = JSON.stringify(category)
+    
     nameSite.innerText = site.name;
     nameSite.setAttribute('data-id', site.id)
-    th.appendChild(nameSite);
+    trSite.appendChild(nameSite);
 
+    userSite.innerText = site.user;
+    trSite.appendChild(userSite);
+
+    createSite.innerText = createdDate.getDate()+'/'+createdDate.getMonth()+'/'+createdDate.getFullYear();
+    trSite.appendChild(createSite);
+
+    actions.innerHTML = `
+      <a href="${site.url}" target="_blank"><i class="fa-solid fa-globe"></i></a>
+      <a href=""><i class="fa-solid fa-trash" style="color: #ec3257;"></i></a>
+      <a href=""><i class="fa-solid fa-pen-to-square" style="color: #000000;"></i></a>
+    `
+    trSite.appendChild(actions);
 
   })
 }

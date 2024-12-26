@@ -62,13 +62,15 @@ const drawData = (data) => {
     
           this.classList.add('list-group-item-primary');
           deleteButton.disabled = false;
+
+          getListSites(selectedId).then(data => {
+            drawSites(data);
+          });
         }
     });
   });
 
-  getListSites(1).then(data => {
-    drawSites(data);
-  });
+
 }
 
 
@@ -99,7 +101,7 @@ deleteButton.addEventListener('click', (event) => {
 
 
 
-const drawSites = (category) => {
+const drawSites = (categoryId) => {
 
   //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
   let parent = document.getElementsByTagName('tbody')[0];
@@ -107,10 +109,7 @@ const drawSites = (category) => {
 
   const {
     sites
-} = category
-
-
-  
+  } = categoryId
 
   sites.forEach(site => {
 

@@ -54,4 +54,30 @@ const postCategory = async() => {
 
 
 
+//Eliminar categoría
+const deleteCategory = async(id) => {
+
+    try {
+        const response = await fetch(`http://localhost:3000/categories/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',  
+            },
+        });
+
+        if(response.status === 200) {
+            const data = await getListCategories();
+            drawData(data);
+        } else if (response.status === 401) {
+            console.log('Hay un error en la petición')
+        } else {
+        console.log('Hubo un error al eliminar la categoría')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
 

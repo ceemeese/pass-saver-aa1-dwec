@@ -102,5 +102,46 @@ const getListSites = async(id) => {
 
 
 
+//Añadir Site
+const postSite = async() => {
+
+    const siteName = document.querySelector("#siteName").value;
+    const siteURL = document.querySelector("#siteURL").value;
+    const siteUser = document.querySelector("#siteUser").value;
+    const sitePassword = document.querySelector("#sitePassword").value;
+    const siteDescription = document.querySelector("#siteDesription").value;
+
+
+    const datos = {
+        name: siteName,
+        url: siteURL,
+        user: siteUser,
+        password: sitePassword,
+        description: siteDescription
+    };
+
+    try {
+        const response = await fetch(`http://localhost:3000/categories/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  
+            },
+            body: JSON.stringify(datos)
+        });
+
+        if(response.status === 200) {
+            sendMessage()
+        } else if (response.status === 401) {
+            console.log('Hay un error en la petición')
+        } else {
+        console.log('Hubo un error, revisa parámetros')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
 
 

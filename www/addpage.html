@@ -21,37 +21,42 @@
       <p class="lead">Gestor de contraseñas de Actividad de Desarrollo Web Entorno Cliente</p>
     </div>
 
-    <form>
+    <form name="addSiteForm">
         <div class="form-group row mb-3">
-            <label for="URL" class="col-sm-2 col-form-label">URL</label>
+            <label for="siteName" class="col-sm-2 col-form-label">Nombre</label>
             <div class="col-sm-10">
-            <input type="text" class="form-control" id="URL">
+            <input name="siteName" type="text" class="form-control" id="siteName">
             </div>
         </div>
         <div class="form-group row mb-3">
-            <label for="User" class="col-sm-2 col-form-label">User</label>
+            <label for="siteURL" class="col-sm-2 col-form-label">URL</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="User">
+            <input name="siteURL" type="text" class="form-control" id="siteURL">
             </div>
         </div>
         <div class="form-group row mb-3">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <label for="siteUser" class="col-sm-2 col-form-label">User</label>
+            <div class="col-sm-10">
+                <input name="siteUser" type="text" class="form-control" id="siteUser">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label for="sitePassword" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-9">
-            <input type="password" class="form-control" id="inputPassword">
+            <input name="sitePassword" type="password" class="form-control" id="sitePassword">
             </div>
             <a href="" class="col-sm-1"><i class="fa-solid fa-ticket"></i><a>
         </div>
         <div class="form-group row mb-3">
-            <label for="description">Descripción</label>
-            <textarea class="form-control" id="description" rows="4"></textarea>
+            <label for="siteDescription">Descripción</label>
+            <textarea name="siteDescription" class="form-control" id="siteDescription" rows="4"></textarea>
         </div>
 
         <div class="text-center">
-            <button type="submit" class="btn btn-danger">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button id="close-btn-site" type="button" class="btn btn-danger" onclick="location.href='index.html'">Cancelar</button>
+            <button name="sendSite" id="submit-btn-site" type="submit" class="btn btn-success" onclick="return false" disabled>Guardar</button>
         </div>
     </form>
-
 
     </div>
 

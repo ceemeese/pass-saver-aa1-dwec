@@ -25,7 +25,7 @@
         <div class="form-group row mb-3">
             <label for="siteName" class="col-sm-2 col-form-label">Nombre</label>
             <div class="col-sm-10">
-            <input name="siteName" type="text" class="form-control" id="siteName">
+            <input name="siteName" type="text" class="form-control" id="siteName" onkeyup="checkDataSite()" required>
             </div>
         </div>
         <div class="form-group row mb-3">
@@ -37,13 +37,13 @@
         <div class="form-group row mb-3">
             <label for="siteUser" class="col-sm-2 col-form-label">User</label>
             <div class="col-sm-10">
-                <input name="siteUser" type="text" class="form-control" id="siteUser">
+                <input name="siteUser" type="text" class="form-control" id="siteUser" onkeyup="checkDataSite()" required>
             </div>
         </div>
         <div class="form-group row mb-3">
             <label for="sitePassword" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-9">
-            <input name="sitePassword" type="password" class="form-control" id="sitePassword">
+            <input name="sitePassword" type="password" class="form-control" id="sitePassword" onkeyup="checkDataSite()" required>
             </div>
             <a href="" class="col-sm-1"><i class="fa-solid fa-ticket"></i><a>
         </div>

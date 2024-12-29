@@ -1,14 +1,21 @@
-function checkDataSite() {
-    if(document.addSiteForm.siteName.value || document.addSiteForm.siteUser.value || document.addSiteForm.sitePassword.value === '' ) {
-      document.addcategory.send.disabled = true
+window.addEventListener('DOMContentLoaded', (event) => {
+  
+
+    console.log('Hola script de añadir site')
+    
+  })
+
+  function checkDataSite() {
+    if(document.addSiteForm.siteName.value === '' || document.addSiteForm.siteUser.value === '' || document.addSiteForm.sitePassword.value === '' ) {
+      document.addSiteForm.sendSite.disabled = true
     } else {
-      document.addcategory.send.disabled = false
+      document.addSiteForm.sendSite.disabled = false
     }
   }
 
 //Evento de envío de formulario añadir site
 const submitButtonSite = document.querySelector("#submit-btn-site");
-submitButton.addEventListener("click", (event) => {
+submitButtonSite.addEventListener("click", (event) => {
     event.preventDefault();
     postSite();
 });

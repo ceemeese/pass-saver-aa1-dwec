@@ -1,4 +1,3 @@
-
 //Listar categorías
 const getListCategories = async() => {
 
@@ -67,7 +66,7 @@ const deleteCategory = async(id) => {
 
         if(response.status === 200) {
             const data = await getListCategories();
-            drawData(data);
+            drawData(data); 
         } else if (response.status === 401) {
             console.log('Hay un error en la petición')
         } else {
@@ -103,13 +102,13 @@ const getListSites = async(id) => {
 
 
 //Añadir Site
-const postSite = async() => {
+const postSite = async(id) => {
 
     const siteName = document.querySelector("#siteName").value;
     const siteURL = document.querySelector("#siteURL").value;
     const siteUser = document.querySelector("#siteUser").value;
     const sitePassword = document.querySelector("#sitePassword").value;
-    const siteDescription = document.querySelector("#siteDesription").value;
+    const siteDescription = document.querySelector("#siteDescription").value;
 
 
     const datos = {
@@ -130,7 +129,8 @@ const postSite = async() => {
         });
 
         if(response.status === 200) {
-            sendMessage()
+            const data = await response.json();
+            console.log('Sitio añadido con éxito:', data);
         } else if (response.status === 401) {
             console.log('Hay un error en la petición')
         } else {

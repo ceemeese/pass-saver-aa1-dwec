@@ -1,18 +1,30 @@
 function sendError() {
-    let parent = document.getElementsByTagName('tbody')[0];
-    //let errorMessage = document.createElement('div')
+  const form = document.querySelector('#form');
+    
+  if (form) {
+      const errorMessage = document.createElement('div');
+      errorMessage.classList.add('alert', 'alert-danger');
+      errorMessage.setAttribute('role', 'alert');
+      errorMessage.textContent = 'Error, revisa los campos obligatorios';
 
-    parent.innerHTML = `
-      <div class='alert alert-danger' role='alert'>Error, revisa los campos obligatorios</div>
-    `
+      form.appendChild(errorMessage);
+  } else {
+      console.log('Formulario no encontrado');
+  }
 }
 
 
 function sendMessage() {
-    let parent = document.getElementsByTagName('tbody')[0];
-    //let validMessage = document.createElement('div')
+    const form = document.querySelector('#form');
 
-    parent.innerHTML = `
-      <div class='alert alert-success' role='alert'>Site registrado correctamente</div>
-    `
+    if (form) {
+      const sendMessage = document.createElement('div');
+      sendMessage.classList.add('alert', 'alert-success');
+      sendMessage.setAttribute('role', 'alert');
+      sendMessage.textContent = 'Site registrado correctamente';
+
+      form.appendChild(sendMessage);
+  } else {
+      console.log('Formulario no encontrado');
+  }
 }

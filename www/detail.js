@@ -1,21 +1,150 @@
-window.addEventListener('DOMContentLoaded', (event) => {
-  
+let selectedId = null
 
+window.addEventListener('DOMContentLoaded', (event) => {
+
+  // Obtener selectedId desde el hash de la URL
+  selectedId = getSelectedId();
+  if (selectedId) {
+    console.log("selectedId desde el hash:", selectedId);
+  } else {
+    console.log("No se encontró selectedId en el hash");
+  }
+
+  function getSelectedId() {
+    const hash = window.location.hash;
+    const match = hash.match(/^#\/(\d+)$/);
+    if (match) {
+      return match[1];
+    }
+    return null;
+  }
+
+  
     console.log('Hola script de añadir site')
     
   })
 
-  function checkDataSite() {
-    if(document.addSiteForm.siteName.value === '' || document.addSiteForm.siteUser.value === '' || document.addSiteForm.sitePassword.value === '' ) {
-      document.addSiteForm.sendSite.disabled = true
-    } else {
-      document.addSiteForm.sendSite.disabled = false
-    }
+  const nameInput = document.getElementById('siteName');
+  const URLInput = document.getElementById('siteURL');
+  const userInput = document.getElementById('siteUser');
+  const passwordInput = document.getElementById('sitePassword');
+  const descriptionInput = document.getElementById('siteDescription');
+
+  const inputs = document.querySelectorAll('#form input')
+
+
+  const campos = {
+    siteName: false,
+    siteURL: true,
+    siteUser: false,
+    sitePassword: false,
+    siteDescription: true
+}
+
+const validation = {
+  nameValidation: /^([A-Za-zñáéíóú]+[\s]*)+$/,
+  urlValidation: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/,
+  passValidation: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])\S{8}$/
+}
+
+const validationForm = (e) => {
+  switch (e.target.name) {
+      case 'siteName':
+          validationInput(validation.nameValidation, e.target, 'siteName');
+        break;
+      case 'siteURL':
+        if (siteURL.value !== '') {
+          validationInput(validation.urlValidation, e.target, 'siteURL');
+        }
+        break;
+      case 'siteUser':
+          validationInput(validation.nameValidation, e.target, 'siteUser');
+        break;
+      case 'sitePassword':
+          validationInput(validation.passValidation, e.target, 'sitePassword');
+        break;
+      case 'siteDescription':
+        if (siteDescription.value !== '') {
+        }
+        break;
   }
+}
+
+const validationInput = (validation, input, campo) => {
+
+  console.log(`Validando ${campo}: ${input.value}`);
+  if(validation.test(input.value)) {
+    console.log(`Campo ${campo} validado correctamente`); // Verificar si la validación pasa
+    campos[campo] = true; // Cambiar el estado de validación
+    document.getElementById(`field_${campo}`).classList.remove('field-incorrecto');
+    document.getElementById(`field_${campo}`).classList.add('field-correcto');
+    document.querySelector(`#field_${campo} .input_error`).classList.remove('input_error-activo');
+    document.querySelector(`#field_${campo} .input_error_general`).classList.remove('input_error_general-activo');
+
+  } else {
+    console.log(`Campo ${campo} no válido`); // Si no pasa la validación
+    campos[campo] = false; // Cambiar el estado de validación
+    document.getElementById(`field_${campo}`).classList.add('field-incorrecto');
+    document.getElementById(`field_${campo}`).classList.remove('field-correcto');
+    document.querySelector(`#field_${campo} .input_error`).classList.add('input_error-activo');
+    document.querySelector(`#field_${campo} .input_error_general`).classList.remove('input_error_general-activo');
+  }
+}
+
+//validacion por cada input al levantar la tecla y al salir dar click fuera de campo
+inputs.forEach((input) => {
+  input.addEventListener('keyup', validationForm);
+  input.addEventListener('blur', validationForm);
+});
+
+
+/* valida que todos los campos estén cumplimentados, en caso de OK envía alerta y resetea*/
+function camposText(){
+  if (siteName.value === ''){
+      document.getElementById('field_siteName').classList.add('field-incorrecto');
+      document.getElementById('field_siteName').classList.remove('field-correcto');
+      document.querySelector('#field_siteName .input_error_general').classList.add('input_error_general-activo');
+      document.querySelector('#field_siteName .input_error').classList.remove('input_error-activo');
+  }
+  if (siteUser.value === '') {
+      document.getElementById('field_siteUser').classList.add('field-incorrecto');
+      document.getElementById('field_siteUser').classList.remove('field-correcto');
+      document.querySelector('#field_siteUser .input_error_general').classList.add('input_error_general-activo');
+      document.querySelector('#field_siteUser .input_error').classList.remove('input_error-activo');
+  }
+  if (sitePassword.value === '') {
+      document.getElementById(`field_sitePassword`).classList.add('field-incorrecto');
+      document.getElementById(`field_sitePassword`).classList.remove('field-correcto');
+      document.querySelector('#field_sitePassword .input_error_general').classList.add('input_error_general-activo');
+      document.querySelector('#field_sitePassword .input_error').classList.remove('input_error-activo');
+      }
+}
+
+
+function resetField(){
+  document.getElementById('field_siteName').classList.remove('field-correcto');
+  document.getElementById('field_siteURL').classList.remove('field-correcto');
+  document.getElementById('field_siteUser').classList.remove('field-correcto');
+  document.getElementById('field_sitePassword').classList.remove('field-correcto');
+  document.getElementById('field_siteDescription').classList.remove('field-correcto');
+}
+
 
 //Evento de envío de formulario añadir site
-const submitButtonSite = document.querySelector("#submit-btn-site");
-submitButtonSite.addEventListener("click", (event) => {
+form.addEventListener('submit', function (event){
     event.preventDefault();
-    postSite();
+
+    if (siteName.value === '' || siteUser.value === '' || sitePassword.value === '') {
+      camposText();
+    } else {
+      postSite(selectedId)
+      .then(() => {
+        sendMessage();
+        form.reset();
+        resetField();
+      })
+      .catch(() => {
+        sendError();
+      });
+    }
 });

@@ -134,6 +134,7 @@ function resetField(){
 form.addEventListener('submit', function (event){
     event.preventDefault();
 
+    //Validación de campos obligatorios
     if (siteName.value === '' || siteUser.value === '' || sitePassword.value === '') {
       camposText();
     } else {

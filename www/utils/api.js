@@ -65,6 +65,7 @@ const deleteCategory = async(id) => {
         });
 
         if(response.status === 200) {
+            console.log('Categoría eliminada con éxito')
             const data = await getListCategories();
             drawData(data); 
         } else if (response.status === 401) {
@@ -135,6 +136,30 @@ const postSite = async(id) => {
             console.log('Hay un error en la petición')
         } else {
         console.log('Hubo un error, revisa parámetros')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
+const deleteSite = async(id) => {
+
+    try {
+        const response = await fetch(`http://localhost:3000/sites/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',  
+            },
+        });
+
+        if(response.status === 200) {
+            console.log('Sitio eliminado con éxito')
+        } else if (response.status === 401) {
+            console.log('Hay un error en la petición')
+        } else {
+        console.log('Hubo un error al eliminar la categoría')
         }
     } catch (error) {
         console.log(error)

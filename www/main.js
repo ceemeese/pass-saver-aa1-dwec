@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', (event) => {
 
   let selectedId = null;
+  let siteId = null;
 
   //Obtener y pintar categorías
   getListCategories().then(data => {
@@ -106,7 +107,7 @@ deleteButton.addEventListener('click', (event) => {
 })
 
 
-
+//Mostrar los Sites
 const drawSites = (categoryId) => {
 
   //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
@@ -142,13 +143,30 @@ const drawSites = (categoryId) => {
 
     actions.innerHTML = `
       <a href="${site.url}" target="_blank"><i class="fa-solid fa-globe"></i></a>
-      <a href=""><i class="fa-solid fa-trash" style="color: #ec3257;"></i></a>
+      <a href="" data-id="${site.id}"  onclick="return false" name="delsite"><i class="fa-solid fa-trash" style="color: #ec3257;"></i></a>
       <a href=""><i class="fa-solid fa-pen-to-square" style="color: #000000;"></i></a>
     `
     trSite.appendChild(actions);
 
+    const actionDelete = document.querySelectorAll('[name="delsite"]');
+
+    actionDelete.forEach(deleteSiteLink => {
+      deleteSiteLink.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const siteId = deleteSiteLink.getAttribute('data-id');
+        deleteSite(siteId).then(() => {
+          
+          getListSites(selectedId).then(data => {
+            drawSites(data);
+          });
+        });
+      });
+    });
   })
 }
+
+
 
 
 

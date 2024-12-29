@@ -1,4 +1,3 @@
-
 //Listar categorías
 const getListCategories = async() => {
 
@@ -67,7 +66,7 @@ const deleteCategory = async(id) => {
 
         if(response.status === 200) {
             const data = await getListCategories();
-            drawData(data);
+            drawData(data); 
         } else if (response.status === 401) {
             console.log('Hay un error en la petición')
         } else {
@@ -90,6 +89,48 @@ const getListSites = async(id) => {
             const data = await response.json()
             console.log(data);
             return data;
+        } else if (response.status === 401) {
+            console.log('Hay un error en la petición')
+        } else {
+        console.log('Hubo un error, revisa parámetros')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
+//Añadir Site
+const postSite = async(id) => {
+
+    const siteName = document.querySelector("#siteName").value;
+    const siteURL = document.querySelector("#siteURL").value;
+    const siteUser = document.querySelector("#siteUser").value;
+    const sitePassword = document.querySelector("#sitePassword").value;
+    const siteDescription = document.querySelector("#siteDescription").value;
+
+
+    const datos = {
+        name: siteName,
+        url: siteURL,
+        user: siteUser,
+        password: sitePassword,
+        description: siteDescription
+    };
+
+    try {
+        const response = await fetch(`http://localhost:3000/categories/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  
+            },
+            body: JSON.stringify(datos)
+        });
+
+        if(response.status === 200) {
+            const data = await response.json();
+            console.log('Sitio añadido con éxito:', data);
         } else if (response.status === 401) {
             console.log('Hay un error en la petición')
         } else {

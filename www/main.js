@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', (event) => {
 
-  const selectedId = null;
+  let selectedId = null;
 
   //Obtener y pintar categorías
   getListCategories().then(data => {
@@ -52,6 +52,9 @@ const drawData = (data) => {
           this.classList.remove('list-group-item-primary');
           selectedId = null;
           deleteButton.disabled = true;
+
+          //se limpia hash si no hay categoria seleccionada
+          window.location.hash = '';
           
         } else {
           
@@ -62,6 +65,9 @@ const drawData = (data) => {
     
           this.classList.add('list-group-item-primary');
           deleteButton.disabled = false;
+
+          // hash de ruta modificado
+          window.location.hash = `/${selectedId}`
 
           getListSites(selectedId).then(data => {
             drawSites(data);

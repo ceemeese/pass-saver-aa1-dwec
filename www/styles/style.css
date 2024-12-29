@@ -29,3 +29,34 @@ li {
 a {
   padding: 5px;
 }
+
+
+
+
+/* Validar borde de input */
+.field-correcto .form_input{
+  border: 3px solid #1ed12d;
+}
+
+.field-incorrecto .form_input {
+  border: 3px solid #bb2929;
+}
+
+
+/*Control errores de texto*/
+.input_error {
+  font-size: 11px;
+  color: #bb2929;
+  display: none;
+}
+.input_error-activo {
+  display: block;
+}
+.input_error_general {
+  font-size: 11px;
+  color: #bb2929;
+  display: none;
+}
+.input_error_general-activo {
+  display: block;
+}

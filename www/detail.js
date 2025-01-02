@@ -21,11 +21,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   //Generar password aleatoria
   const autoPasswordLink = document.getElementById('autogenerateLink');
-  autoPasswordLink.addEventListener("click" , () => {
+  autoPasswordLink.addEventListener("click" , (event) => {
+    event.preventDefault();
     const passwordInput = document.getElementById('sitePassword');
     generate(passwordInput);
   })
 
+  //Ver contraseña secreta
+  const viewSecretPassword = document.getElementById('viewPasswordLink');
+    viewSecretPassword.addEventListener("click", (event) => {
+      event.preventDefault();
+      const inputPassword = document.getElementById('sitePassword');
+      inputPassword.type = inputPassword.type === "password" ? "text" : "password";
+    })
 
 
     console.log('Hola script de añadir site')

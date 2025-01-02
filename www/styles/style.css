@@ -61,7 +61,7 @@ a {
   display: block;
 }
 
-#autogenerateLink {
+#autogenerateLink, #viewPasswordLink {
   display: inline-flex;
   justify-content: center;
 }

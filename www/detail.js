@@ -19,7 +19,23 @@ window.addEventListener('DOMContentLoaded', (event) => {
     return null;
   }
 
-  
+  //Generar password aleatoria
+  const autoPasswordLink = document.getElementById('autogenerateLink');
+  autoPasswordLink.addEventListener("click" , (event) => {
+    event.preventDefault();
+    const passwordInput = document.getElementById('sitePassword');
+    generate(passwordInput);
+  })
+
+  //Ver contraseña secreta
+  const viewSecretPassword = document.getElementById('viewPasswordLink');
+    viewSecretPassword.addEventListener("click", (event) => {
+      event.preventDefault();
+      const inputPassword = document.getElementById('sitePassword');
+      inputPassword.type = inputPassword.type === "password" ? "text" : "password";
+    })
+
+
     console.log('Hola script de añadir site')
     
   })
@@ -149,3 +165,36 @@ form.addEventListener('submit', function (event){
       });
     }
 });
+
+
+
+
+const generatePassword = () => {
+const length = 8;
+const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const numbers = "0123456789";
+const specialChar = ".?,;-_¡!¿*%&$/()[]{}|@><";
+
+const allChars = lowerCase + upperCase + numbers + specialChar;
+
+const passwordArray = [
+  lowerCase.charAt(Math.floor(Math.random() * lowerCase.length)),
+  upperCase.charAt(Math.floor(Math.random() * upperCase.length)),
+  numbers.charAt(Math.floor(Math.random() * numbers.length)),
+  specialChar.charAt(Math.floor(Math.random() * specialChar.length)),
+];
+
+while (passwordArray.length < length) {
+  passwordArray.push(allChars.charAt(Math.floor(Math.random() * allChars.length)));
+}
+
+return passwordArray.sort(() => Math.random() - 0.5).join('');
+
+}
+
+const generate = (passwordInput) => {
+  const newPassword = generatePassword();
+  passwordInput.value = newPassword;
+  console.log("Contraseña:", newPassword);
+};

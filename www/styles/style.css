@@ -60,3 +60,8 @@ a {
 .input_error_general-activo {
   display: block;
 }
+
+#autogenerateLink, #viewPasswordLink {
+  display: inline-flex;
+  justify-content: center;
+}

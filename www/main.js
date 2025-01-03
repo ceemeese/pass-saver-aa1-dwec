@@ -1,12 +1,18 @@
+import API from './utils/api.js';
+const api = new API('http://localhost:3000');
+
+let selectedId = null;
+let siteId = null;
+
+
+
 window.addEventListener('DOMContentLoaded', (event) => {
 
-  let selectedId = null;
-  let siteId = null;
+  const categoryInput = document.querySelector('#category');
+  categoryInput.addEventListener('input', checkName);
 
   //Obtener y pintar categorías
-  getListCategories().then(data => {
-    drawData(data);
-  });
+  api.getListCategories(drawData);
 
 
   //Lógica para abrir y cerrar formulario popup
@@ -70,9 +76,7 @@ const drawData = (data) => {
           // hash de ruta modificado
           window.location.hash = `/${selectedId}`
 
-          getListSites(selectedId).then(data => {
-            drawSites(data);
-          });
+          api.getListSites(selectedId, drawSites);
         }
     });
   });
@@ -83,18 +87,35 @@ const drawData = (data) => {
 
 //Función para habilitar/deshabilitar botón de enviar
 function checkName() {
-  if(document.addcategory.category.value === '' ) {
-    document.addcategory.send.disabled = true
+
+  const categoryInput = document.querySelector('#category');
+  const submitButton = document.querySelector('#submit-btn');
+
+  if(categoryInput.value === '' ) {
+    submitButton.disabled = true
   } else {
-    document.addcategory.send.disabled = false
+    submitButton.disabled = false
   }
 }
+
+function redirectToAddPage() {
+  if (selectedId) {
+    location.href = 'addpage.html#/' + selectedId;
+  } else {
+    console.log('selectedId no tiene valor');
+  }
+}
+
+//Evento para añadir página asociada a un ID de categoria
+const addButton = document.querySelector('#add-site');
+addButton.addEventListener('click', redirectToAddPage);
 
 //Evento de envío de formulario
 const submitButton = document.querySelector("#submit-btn");
 submitButton.addEventListener("click", (event) => {
     event.preventDefault();
-    postCategory();
+    const categoryName = document.querySelector("#category").value;
+    api.postCategory(categoryName, drawData);
 });
 
 
@@ -103,8 +124,8 @@ const deleteButton = document.querySelector("#del-btn");
 deleteButton.addEventListener('click', (event) => {
   event.preventDefault();
 
-  deleteCategory(selectedId);
-})
+  api.deleteCategory(selectedId, drawData);
+});
 
 
 //Mostrar los Sites
@@ -155,16 +176,11 @@ const drawSites = (categoryId) => {
         event.preventDefault();
 
         const siteId = deleteSiteLink.getAttribute('data-id');
-        deleteSite(siteId).then(() => {
-          
-          getListSites(selectedId).then(data => {
-            drawSites(data);
-          });
-        });
+        api.deleteSite(siteId, selectedId, drawSites);
       });
     });
-  })
-}
+  });
+};
 
 
 

@@ -1,3 +1,6 @@
+import API from './utils/api.js';
+
+const api = new API('http://localhost:3000');
 let selectedId = null
 
 window.addEventListener('DOMContentLoaded', (event) => {
@@ -154,7 +157,7 @@ form.addEventListener('submit', function (event){
     if (siteName.value === '' || siteUser.value === '' || sitePassword.value === '') {
       camposText();
     } else {
-      postSite(selectedId)
+      api.postSite(selectedId)
       .then(() => {
         sendMessage();
         form.reset();

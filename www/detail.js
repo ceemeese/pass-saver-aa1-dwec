@@ -158,9 +158,18 @@ form.addEventListener('submit', function (event){
         sendMessage();
         form.reset();
         resetField();
+
+        //Eliminar alerta cuando pasan 5 segundos
+        setTimeout(() => {
+          clearMessage();
+        }, 3000)
       })
       .catch(() => {
         sendError();
+
+        setTimeout(() => {
+          clearMessage();
+        }, 3000)
       });
     }
 });

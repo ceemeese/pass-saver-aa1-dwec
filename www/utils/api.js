@@ -126,6 +126,7 @@ class API {
             if(response.ok) {
                 const data = await response.json();
                 console.log('Sitio añadido con éxito:', data);
+                return data;
             } else {
                 if (response.status === 404) throw new Error('404, No encontrado');
                 if (response.status === 500) throw new Error('500, Error interno del servidor');

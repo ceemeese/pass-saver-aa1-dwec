@@ -11,16 +11,17 @@ class API {
             const response = await fetch(`${this.baseURL}/categories`);
             console.log(response);
     
-            if(response.status === 200) {
-                const data = await response.json()
+            if(response.ok) {
+                const data = await response.json();
                 drawData(data);
-            } else if (response.status === 401) {
-                console.log('Hay un error en la petición')
             } else {
-            console.log('Hubo un error, revisa parámetros')
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
             }
         } catch (error) {
-            console.log(error)
+            console.error('Fetch', error);
         }
     }
 
@@ -46,13 +47,15 @@ class API {
             if(response.status === 200) {
                 console.log('Sitio añadido con éxito');
                 await this.getListCategories(drawData);
-            } else if (response.status === 401) {
-                console.log('Hay un error en la petición')
             } else {
-            console.log('Hubo un error, revisa parámetros')
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
+
             }
         } catch (error) {
-            console.log(error)
+            console.error('Fetch', error);
         }
     }
 
@@ -72,14 +75,15 @@ class API {
 
             if(response.status === 200) {
                 console.log('Categoría eliminada con éxito')
-                const data = await this.getListCategories(drawData);
-            } else if (response.status === 401) {
-                console.log('Hay un error en la petición')
+                await this.getListCategories(drawData);
             } else {
-            console.log('Hubo un error al eliminar la categoría')
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
             }
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
@@ -97,13 +101,14 @@ class API {
             const data = await response.json()
             console.log(data);
             drawSites(data);
-        } else if (response.status === 401) {
-            console.log('Hay un error en la petición')
         } else {
-        console.log('Hubo un error, revisa parámetros')
+            if (response.status === 404) throw new Error('404, No encontrado');
+            if (response.status === 500) throw new Error('500, Error interno del servidor');
+            
+            throw new Error(response.status);
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
@@ -133,13 +138,14 @@ class API {
             if(response.status === 200) {
                 const data = await response.json();
                 console.log('Sitio añadido con éxito:', data);
-            } else if (response.status === 401) {
-                console.log('Hay un error en la petición')
             } else {
-            console.log('Hubo un error, revisa parámetros')
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
             }
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
@@ -158,14 +164,15 @@ class API {
     
             if(response.status === 200) {
                 console.log('Sitio eliminado con éxito');
-                const data = await this.getListSites(selectedId, drawSites);
-            } else if (response.status === 401) {
-                console.log('Hay un error en la petición');
+                await this.getListSites(selectedId, drawSites);
             } else {
-            console.log('Hubo un error al eliminar la categoría');
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
             }
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
     

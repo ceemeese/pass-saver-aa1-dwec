@@ -31,20 +31,16 @@ class API {
     //Añadir categoría
     async postCategory(categoryName, drawData) {
 
-        const datos = {
-            name: categoryName
-        };
-
         try {
             const response = await fetch(`${this.baseURL}/categories`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',  
                 },
-                body: JSON.stringify(datos)
+                body: JSON.stringify({ name: categoryName })
             });
 
-            if(response.status === 200) {
+            if(response.ok) {
                 console.log('Sitio añadido con éxito');
                 await this.getListCategories(drawData);
             } else {
@@ -73,7 +69,7 @@ class API {
                 },
             });
 
-            if(response.status === 200) {
+            if(response.ok) {
                 console.log('Categoría eliminada con éxito')
                 await this.getListCategories(drawData);
             } else {
@@ -97,7 +93,7 @@ class API {
         const response = await fetch(`${this.baseURL}/categories/${id}`);
         console.log(response);
 
-        if(response.status === 200) {
+        if(response.ok) {
             const data = await response.json()
             console.log(data);
             drawSites(data);
@@ -116,15 +112,7 @@ class API {
 
 
     //Añadir Site
-    async postSite(id) {
-
-        const datos = {
-            name: document.querySelector("#siteName").value,
-            url: document.querySelector("#siteURL").value,
-            user: document.querySelector("#siteUser").value,
-            password: document.querySelector("#sitePassword").value,
-            description: document.querySelector("#siteDescription").value
-        };
+    async postSite(id, datos) {
 
         try {
             const response = await fetch(`${this.baseURL}/categories/${id}`, {
@@ -135,7 +123,7 @@ class API {
                 body: JSON.stringify(datos)
             });
 
-            if(response.status === 200) {
+            if(response.ok) {
                 const data = await response.json();
                 console.log('Sitio añadido con éxito:', data);
             } else {
@@ -162,7 +150,7 @@ class API {
                 },
             });
     
-            if(response.status === 200) {
+            if(response.ok) {
                 console.log('Sitio eliminado con éxito');
                 await this.getListSites(selectedId, drawSites);
             } else {

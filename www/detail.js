@@ -43,13 +43,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     
   })
 
-  const nameInput = document.getElementById('siteName');
-  const URLInput = document.getElementById('siteURL');
-  const userInput = document.getElementById('siteUser');
-  const passwordInput = document.getElementById('sitePassword');
-  const descriptionInput = document.getElementById('siteDescription');
-
-  const inputs = document.querySelectorAll('#form input')
+  
 
 
   const campos = {
@@ -111,6 +105,7 @@ const validationInput = (validation, input, campo) => {
 }
 
 //validacion por cada input al levantar la tecla y al salir dar click fuera de campo
+const inputs = document.querySelectorAll('#form input')
 inputs.forEach((input) => {
   input.addEventListener('keyup', validationForm);
   input.addEventListener('blur', validationForm);
@@ -157,7 +152,8 @@ form.addEventListener('submit', function (event){
     if (siteName.value === '' || siteUser.value === '' || sitePassword.value === '') {
       camposText();
     } else {
-      api.postSite(selectedId)
+      const datos = getFormData();
+      api.postSite(selectedId, datos)
       .then(() => {
         sendMessage();
         form.reset();
@@ -201,3 +197,14 @@ const generate = (passwordInput) => {
   passwordInput.value = newPassword;
   console.log("Contraseña:", newPassword);
 };
+
+
+function getFormData() {
+  return {
+      name: document.querySelector("#siteName").value,
+      url: document.querySelector("#siteURL").value,
+      user: document.querySelector("#siteUser").value,
+      password: document.querySelector("#sitePassword").value,
+      description: document.querySelector("#siteDescription").value,
+  };
+}

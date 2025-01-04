@@ -35,8 +35,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 const drawData = (data) => {
 
   //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
-  let parent = document.getElementsByTagName('ul')[0];
-  parent.innerHTML = ''; 
+  let parentList = document.getElementsByTagName('ul')[0];
+  parentList.innerHTML = ''; 
 
   data.forEach(category => {
     let child = document.createElement('li');
@@ -45,7 +45,7 @@ const drawData = (data) => {
     child.innerText = category.name;
     child.setAttribute('data-id', category.id)
     child.classList.add('list-group-item');
-    parent.appendChild(child);
+    parentList.appendChild(child);
   })
 
   const items = document.querySelectorAll('.list-group-item');
@@ -62,6 +62,9 @@ const drawData = (data) => {
 
           //se limpia hash si no hay categoria seleccionada
           window.location.hash = '';
+
+          const parentTable = document.getElementsByTagName('tbody')[0];
+          parentTable.innerHTML = '';
           
         } else {
           
@@ -134,8 +137,8 @@ deleteButton.addEventListener('click', (event) => {
 const drawSites = (categoryId) => {
 
   //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
-  let parent = document.getElementsByTagName('tbody')[0];
-  parent.innerHTML = ''; 
+  let parentTable = document.getElementsByTagName('tbody')[0];
+  parentTable.innerHTML = ''; 
 
   const {
     sites
@@ -151,7 +154,7 @@ const drawSites = (categoryId) => {
     let createSite = document.createElement('td');
     let actions = document.createElement('td');
 
-    parent.appendChild(trSite)
+    parentTable.appendChild(trSite)
     
     
     nameSite.innerText = site.name;
@@ -183,6 +186,7 @@ const drawSites = (categoryId) => {
     });
   });
 };
+
 
 
 

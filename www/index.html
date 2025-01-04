@@ -50,13 +50,13 @@
         <div class="row justify-content-center popup-container" id="popup">
           <div class="border border-dark col-4 p-3 popup">
             <h4>Nueva Categoría</h4>
-            <form name="addcategory">
+            <form name="addcategory" id="formCategory">
               <div class="mb-2">
                 <label for="category" class="form-label">Nombre</label>
                 <input name="category" type="text" class="form-control" id="category" required>
               </div>
-              <button id="close-btn" type="submit" class="btn btn-danger" onclick="return false">Cancelar</button>
-              <button name="send" id="submit-btn" type="submit" class="btn btn-success" onclick="return false" disabled>OK</button>
+              <button id="close-btn" type="button" class="btn btn-danger" onclick="return false">Cancelar</button>
+              <button name="send" id="submit-btn" type="submit" class="btn btn-success" disabled>OK</button>
             </form>
           </div>
         </div>

@@ -110,12 +110,14 @@ function redirectToAddPage() {
 const addButton = document.querySelector('#add-site');
 addButton.addEventListener('click', redirectToAddPage);
 
+
 //Evento de envío de formulario
-const submitButton = document.querySelector("#submit-btn");
-submitButton.addEventListener("click", (event) => {
+formCategory.addEventListener('submit', function (event) {
     event.preventDefault();
+
     const categoryName = document.querySelector("#category").value;
     api.postCategory(categoryName, drawData);
+    formCategory.reset();
 });
 
 

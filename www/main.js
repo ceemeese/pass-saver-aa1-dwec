@@ -57,14 +57,8 @@ const drawData = (data) => {
         if (this.classList.contains('list-group-item-primary')) {
           // Quitamos la clase activa y reseteamos el selectedId
           this.classList.remove('list-group-item-primary');
-          selectedId = null;
-          deleteButton.disabled = true;
-
-          //se limpia hash si no hay categoria seleccionada
-          window.location.hash = '';
-
-          const parentTable = document.getElementsByTagName('tbody')[0];
-          parentTable.innerHTML = '';
+          
+          clearSelection();
           
         } else {
           
@@ -109,6 +103,17 @@ function redirectToAddPage() {
   }
 }
 
+function clearSelection() {
+  selectedId = null;
+  deleteButton.disabled = true;
+
+  //se limpia hash si no hay categoria seleccionada
+  window.location.hash = '';
+
+  const parentTable = document.getElementsByTagName('tbody')[0];
+  parentTable.innerHTML = '';
+}
+
 //Evento para añadir página asociada a un ID de categoria
 const addButton = document.querySelector('#add-site');
 addButton.addEventListener('click', redirectToAddPage);
@@ -120,8 +125,10 @@ formCategory.addEventListener('submit', function (event) {
 
     const categoryName = document.querySelector("#category").value;
     api.postCategory(categoryName, drawData);
+    deleteButton.disabled = true;
     formCategory.reset();
 });
+
 
 
 //Evento de eliminar categoria
@@ -129,7 +136,9 @@ const deleteButton = document.querySelector("#del-btn");
 deleteButton.addEventListener('click', (event) => {
   event.preventDefault();
 
-  api.deleteCategory(selectedId, drawData);
+  api.deleteCategory(selectedId, drawData)
+  clearSelection();
+  
 });
 
 

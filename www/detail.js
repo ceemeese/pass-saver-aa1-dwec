@@ -66,9 +66,9 @@ const validationForm = (e) => {
           validationInput(validation.nameValidation, e.target, 'siteName');
         break;
       case 'siteURL':
-        if (siteURL.value !== '') {
+        /*if (siteURL.value !== '') {
           validationInput(validation.urlValidation, e.target, 'siteURL');
-        }
+        }*/
         break;
       case 'siteUser':
           validationInput(validation.nameValidation, e.target, 'siteUser');

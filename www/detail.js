@@ -7,11 +7,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   // Obtener selectedId desde el hash de la URL
   selectedId = getSelectedId();
-  if (selectedId) {
-    console.log("selectedId desde el hash:", selectedId);
-  } else {
-    console.log("No se encontró selectedId en el hash");
-  }
+  console.log(selectedId ? `selectedId desde el hash:${selectedId}`: "No se encontró selectedId en el hash" );
+  
 
   function getSelectedId() {
     const hash = window.location.hash;
@@ -30,13 +27,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     generate(passwordInput);
   })
 
-  //Ver contraseña secreta
-  const viewSecretPassword = document.getElementById('viewPasswordLink');
-    viewSecretPassword.addEventListener("click", (event) => {
-      event.preventDefault();
-      const inputPassword = document.getElementById('sitePassword');
-      inputPassword.type = inputPassword.type === "password" ? "text" : "password";
-    })
+ 
 
 
     console.log('Hola script de añadir site')
@@ -55,7 +46,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 }
 
 const validation = {
-  nameValidation: /^([A-Za-zñáéíóú]+[\s]*)+$/,
+  nameValidation: /^([A-Za-zñáéíóú0-9]+[\s]*)+$/,
   urlValidation: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/,
   passValidation: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])\S{8}$/
 }
@@ -143,6 +134,17 @@ function resetField(){
   document.getElementById('field_siteDescription').classList.remove('field-correcto');
 }
 
+ //Obtener datos formulario de dom
+ function getFormData() {
+  return {
+      name: document.querySelector("#siteName").value,
+      url: document.querySelector("#siteURL").value,
+      user: document.querySelector("#siteUser").value,
+      password: document.querySelector("#sitePassword").value,
+      description: document.querySelector("#siteDescription").value,
+  };
+}
+
 
 //Evento de envío de formulario añadir site
 form.addEventListener('submit', function (event){
@@ -176,7 +178,7 @@ form.addEventListener('submit', function (event){
 
 
 
-
+//Generar contraseña aleatoria
 const generatePassword = () => {
 const length = 8;
 const lowerCase = "abcdefghijklmnopqrstuvwxyz";
@@ -207,13 +209,13 @@ const generate = (passwordInput) => {
   console.log("Contraseña:", newPassword);
 };
 
+ //Ver contraseña secreta
+ const viewSecretPassword = document.getElementById('viewPasswordLink');
+ viewSecretPassword.addEventListener("click", (event) => {
+   event.preventDefault();
+   const inputPassword = document.getElementById('sitePassword');
+   inputPassword.type = inputPassword.type === "password" ? "text" : "password";
+ })
 
-function getFormData() {
-  return {
-      name: document.querySelector("#siteName").value,
-      url: document.querySelector("#siteURL").value,
-      user: document.querySelector("#siteUser").value,
-      password: document.querySelector("#sitePassword").value,
-      description: document.querySelector("#siteDescription").value,
-  };
-}
+
+

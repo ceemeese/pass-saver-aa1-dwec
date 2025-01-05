@@ -1,171 +1,173 @@
-//Listar categorías
-const getListCategories = async() => {
+class API {
+    constructor(baseURL) {
+        this.baseURL = baseURL;
+    }
+
+
+    //Listar categorias
+    async getListCategories(drawData) {
+
+        try {
+            const response = await fetch(`${this.baseURL}/categories`);
+            console.log(response);
+    
+            if(response.ok) {
+                const data = await response.json();
+                drawData(data);
+            } else {
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
+            }
+        } catch (error) {
+            console.error('Fetch', error);
+        }
+    }
+
+
+
+
+    //Añadir categoría
+    async postCategory(categoryName, drawData) {
+
+        try {
+            const response = await fetch(`${this.baseURL}/categories`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  
+                },
+                body: JSON.stringify({ name: categoryName })
+            });
+
+            if(response.ok) {
+                console.log('Sitio añadido con éxito');
+                await this.getListCategories(drawData);
+            } else {
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
+
+            }
+        } catch (error) {
+            console.error('Fetch', error);
+        }
+    }
+
+
+
+
+    //Eliminar categoría
+    async deleteCategory(id, drawData) {
+
+        try {
+            const response = await fetch(`${this.baseURL}/categories/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',  
+                },
+            });
+
+            if(response.ok) {
+                console.log('Categoría eliminada con éxito')
+                await this.getListCategories(drawData);
+            } else {
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
+
+
+    //Listar sites
+    async getListSites(id, drawSites) {
 
     try {
-        const response = await fetch('http://localhost:3000/categories');
+        const response = await fetch(`${this.baseURL}/categories/${id}`);
         console.log(response);
 
-        if(response.status === 200) {
+        if(response.ok) {
             const data = await response.json()
             console.log(data);
-            return data;
-        } else if (response.status === 401) {
-            console.log('Hay un error en la petición')
+            drawSites(data);
         } else {
-        console.log('Hubo un error, revisa parámetros')
+            if (response.status === 404) throw new Error('404, No encontrado');
+            if (response.status === 500) throw new Error('500, Error interno del servidor');
+            
+            throw new Error(response.status);
         }
     } catch (error) {
-        console.log(error)
-    }
-}
-
-
-//Añadir categoría
-const postCategory = async() => {
-
-    const categoryName = document.querySelector("#category").value;
-
-    const datos = {
-        name: categoryName
-    };
-
-    try {
-        const response = await fetch('http://localhost:3000/categories', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',  
-            },
-            body: JSON.stringify(datos)
-        });
-
-        if(response.status === 200) {
-            const data = await getListCategories();
-            drawData(data);
-        } else if (response.status === 401) {
-            console.log('Hay un error en la petición')
-        } else {
-        console.log('Hubo un error, revisa parámetros')
-        }
-    } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
 
 
-//Eliminar categoría
-const deleteCategory = async(id) => {
 
-    try {
-        const response = await fetch(`http://localhost:3000/categories/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',  
-            },
-        });
+    //Añadir Site
+    async postSite(id, datos) {
 
-        if(response.status === 200) {
-            console.log('Categoría eliminada con éxito')
-            const data = await getListCategories();
-            drawData(data); 
-        } else if (response.status === 401) {
-            console.log('Hay un error en la petición')
-        } else {
-        console.log('Hubo un error al eliminar la categoría')
+        try {
+            const response = await fetch(`${this.baseURL}/categories/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  
+                },
+                body: JSON.stringify(datos)
+            });
+
+            if(response.ok) {
+                const data = await response.json();
+                console.log('Sitio añadido con éxito:', data);
+                return data;
+            } else {
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
+            }
+        } catch (error) {
+            console.error(error)
         }
-    } catch (error) {
-        console.log(error)
     }
+
+
+
+    //Eliminar Site
+    async deleteSite(id, selectedId, drawSites) {
+
+        try {
+            const response = await fetch(`${this.baseURL}/sites/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',  
+                },
+            });
+    
+            if(response.ok) {
+                console.log('Sitio eliminado con éxito');
+                await this.getListSites(selectedId, drawSites);
+            } else {
+                if (response.status === 404) throw new Error('404, No encontrado');
+                if (response.status === 500) throw new Error('500, Error interno del servidor');
+                
+                throw new Error(response.status);
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    
 }
 
-
-//Listar sites
-const getListSites = async(id) => {
-
-    try {
-        const response = await fetch(`http://localhost:3000/categories/${id}`);
-        console.log(response);
-
-        if(response.status === 200) {
-            const data = await response.json()
-            console.log(data);
-            return data;
-        } else if (response.status === 401) {
-            console.log('Hay un error en la petición')
-        } else {
-        console.log('Hubo un error, revisa parámetros')
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-
-
-//Añadir Site
-const postSite = async(id) => {
-
-    const siteName = document.querySelector("#siteName").value;
-    const siteURL = document.querySelector("#siteURL").value;
-    const siteUser = document.querySelector("#siteUser").value;
-    const sitePassword = document.querySelector("#sitePassword").value;
-    const siteDescription = document.querySelector("#siteDescription").value;
-
-
-    const datos = {
-        name: siteName,
-        url: siteURL,
-        user: siteUser,
-        password: sitePassword,
-        description: siteDescription
-    };
-
-    try {
-        const response = await fetch(`http://localhost:3000/categories/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',  
-            },
-            body: JSON.stringify(datos)
-        });
-
-        if(response.status === 200) {
-            const data = await response.json();
-            console.log('Sitio añadido con éxito:', data);
-        } else if (response.status === 401) {
-            console.log('Hay un error en la petición')
-        } else {
-        console.log('Hubo un error, revisa parámetros')
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-
-
-const deleteSite = async(id) => {
-
-    try {
-        const response = await fetch(`http://localhost:3000/sites/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',  
-            },
-        });
-
-        if(response.status === 200) {
-            console.log('Sitio eliminado con éxito')
-        } else if (response.status === 401) {
-            console.log('Hay un error en la petición')
-        } else {
-        console.log('Hubo un error al eliminar la categoría')
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}
-
+export default API;
 
 
 

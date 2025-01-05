@@ -48,6 +48,8 @@ a {
   font-size: 11px;
   color: #bb2929;
   display: none;
+  position: absolute;
+  
 }
 .input_error-activo {
   display: block;

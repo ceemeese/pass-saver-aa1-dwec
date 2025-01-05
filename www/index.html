@@ -23,7 +23,7 @@
 
     <div class="btn-group" role="group" aria-label="Basic example">
       <button id="add-btn" type="button" class="btn btn-dark mb-5">Añadir Categoría</button>
-      <button onclick="location.href='addpage.html#/' + selectedId" type="button" class="btn btn-dark mb-5">Añadir Site</button>
+      <button id="add-site" type="button" class="btn btn-dark mb-5">Añadir Site</button>
       <button name="delcategory" type="button" name="del-btn" id="del-btn" class="btn mb-5 btn-danger" onclick="return false" disabled>Eliminar Categoría</button>
     </div>
 
@@ -50,13 +50,13 @@
         <div class="row justify-content-center popup-container" id="popup">
           <div class="border border-dark col-4 p-3 popup">
             <h4>Nueva Categoría</h4>
-            <form name="addcategory">
+            <form name="addcategory" id="formCategory">
               <div class="mb-2">
                 <label for="category" class="form-label">Nombre</label>
-                <input name="category" type="text" class="form-control" id="category" onkeyup="checkName()" required>
+                <input name="category" type="text" class="form-control" id="category" required>
               </div>
-              <button id="close-btn" type="submit" class="btn btn-danger" onclick="return false">Cancelar</button>
-              <button name="send" id="submit-btn" type="submit" class="btn btn-success" onclick="return false" disabled>OK</button>
+              <button id="close-btn" type="button" class="btn btn-danger" onclick="return false">Cancelar</button>
+              <button name="send" id="submit-btn" type="submit" class="btn btn-success" disabled>OK</button>
             </form>
           </div>
         </div>
@@ -65,7 +65,8 @@
 
     </div>
 
-  <script src="main.js" ></script>
-  <script src="utils/api.js"></script>
+  <script src="./main.js" type="module"></script>
+  <script src="./utils/api.js" type="module"></script>
+
 </body>
 </html>

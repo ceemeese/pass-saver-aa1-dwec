@@ -1,3 +1,4 @@
+//Función mostrar mensaje KO
 function sendError() {
   const form = document.querySelector('#form');
     
@@ -13,12 +14,13 @@ function sendError() {
   }
 }
 
-
+// Función mostrar mensaje OK
 function sendMessage() {
     const form = document.querySelector('#form');
 
     if (form) {
       const sendMessage = document.createElement('div');
+      sendMessage.id = 'message';
       sendMessage.classList.add('alert', 'alert-success');
       sendMessage.setAttribute('role', 'alert');
       sendMessage.textContent = 'Site registrado correctamente';
@@ -26,5 +28,14 @@ function sendMessage() {
       form.appendChild(sendMessage);
   } else {
       console.log('Formulario no encontrado');
+  }
+}
+
+//Función eliminar mensaje alerta
+function clearMessage() {
+  const messageElement = document.querySelector('#message')
+  
+  if (messageElement) {
+    messageElement.remove();
   }
 }

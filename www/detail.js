@@ -1,14 +1,14 @@
+import API from './utils/api.js';
+
+const api = new API('http://localhost:3000');
 let selectedId = null
 
 window.addEventListener('DOMContentLoaded', (event) => {
 
   // Obtener selectedId desde el hash de la URL
   selectedId = getSelectedId();
-  if (selectedId) {
-    console.log("selectedId desde el hash:", selectedId);
-  } else {
-    console.log("No se encontró selectedId en el hash");
-  }
+  console.log(selectedId ? `selectedId desde el hash:${selectedId}`: "No se encontró selectedId en el hash" );
+  
 
   function getSelectedId() {
     const hash = window.location.hash;
@@ -27,26 +27,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     generate(passwordInput);
   })
 
-  //Ver contraseña secreta
-  const viewSecretPassword = document.getElementById('viewPasswordLink');
-    viewSecretPassword.addEventListener("click", (event) => {
-      event.preventDefault();
-      const inputPassword = document.getElementById('sitePassword');
-      inputPassword.type = inputPassword.type === "password" ? "text" : "password";
-    })
+ 
 
 
     console.log('Hola script de añadir site')
     
   })
 
-  const nameInput = document.getElementById('siteName');
-  const URLInput = document.getElementById('siteURL');
-  const userInput = document.getElementById('siteUser');
-  const passwordInput = document.getElementById('sitePassword');
-  const descriptionInput = document.getElementById('siteDescription');
-
-  const inputs = document.querySelectorAll('#form input')
+  
 
 
   const campos = {
@@ -58,7 +46,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 }
 
 const validation = {
-  nameValidation: /^([A-Za-zñáéíóú]+[\s]*)+$/,
+  nameValidation: /^([A-Za-zñáéíóú0-9]+[\s]*)+$/,
   urlValidation: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/,
   passValidation: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])\S{8}$/
 }
@@ -69,9 +57,9 @@ const validationForm = (e) => {
           validationInput(validation.nameValidation, e.target, 'siteName');
         break;
       case 'siteURL':
-        if (siteURL.value !== '') {
+        /*if (siteURL.value !== '') {
           validationInput(validation.urlValidation, e.target, 'siteURL');
-        }
+        }*/
         break;
       case 'siteUser':
           validationInput(validation.nameValidation, e.target, 'siteUser');
@@ -108,6 +96,7 @@ const validationInput = (validation, input, campo) => {
 }
 
 //validacion por cada input al levantar la tecla y al salir dar click fuera de campo
+const inputs = document.querySelectorAll('#form input')
 inputs.forEach((input) => {
   input.addEventListener('keyup', validationForm);
   input.addEventListener('blur', validationForm);
@@ -145,6 +134,17 @@ function resetField(){
   document.getElementById('field_siteDescription').classList.remove('field-correcto');
 }
 
+ //Obtener datos formulario de dom
+ function getFormData() {
+  return {
+      name: document.querySelector("#siteName").value,
+      url: document.querySelector("#siteURL").value,
+      user: document.querySelector("#siteUser").value,
+      password: document.querySelector("#sitePassword").value,
+      description: document.querySelector("#siteDescription").value,
+  };
+}
+
 
 //Evento de envío de formulario añadir site
 form.addEventListener('submit', function (event){
@@ -154,21 +154,31 @@ form.addEventListener('submit', function (event){
     if (siteName.value === '' || siteUser.value === '' || sitePassword.value === '') {
       camposText();
     } else {
-      postSite(selectedId)
+      const datos = getFormData();
+      api.postSite(selectedId, datos)
       .then(() => {
         sendMessage();
         form.reset();
         resetField();
+
+        //Eliminar alerta cuando pasan 5 segundos
+        setTimeout(() => {
+          clearMessage();
+        }, 3000)
       })
       .catch(() => {
         sendError();
+
+        setTimeout(() => {
+          clearMessage();
+        }, 3000)
       });
     }
 });
 
 
 
-
+//Generar contraseña aleatoria
 const generatePassword = () => {
 const length = 8;
 const lowerCase = "abcdefghijklmnopqrstuvwxyz";
@@ -198,3 +208,14 @@ const generate = (passwordInput) => {
   passwordInput.value = newPassword;
   console.log("Contraseña:", newPassword);
 };
+
+ //Ver contraseña secreta
+ const viewSecretPassword = document.getElementById('viewPasswordLink');
+ viewSecretPassword.addEventListener("click", (event) => {
+   event.preventDefault();
+   const inputPassword = document.getElementById('sitePassword');
+   inputPassword.type = inputPassword.type === "password" ? "text" : "password";
+ })
+
+
+

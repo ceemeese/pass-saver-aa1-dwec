@@ -1,12 +1,18 @@
+import API from './utils/api.js';
+const api = new API('http://localhost:3000');
+
+let selectedId = null;
+let siteId = null;
+
+
+
 window.addEventListener('DOMContentLoaded', (event) => {
 
-  let selectedId = null;
-  let siteId = null;
+  const categoryInput = document.querySelector('#category');
+  categoryInput.addEventListener('input', checkName);
 
   //Obtener y pintar categorías
-  getListCategories().then(data => {
-    drawData(data);
-  });
+  api.getListCategories(drawData);
 
 
   //Lógica para abrir y cerrar formulario popup
@@ -29,8 +35,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 const drawData = (data) => {
 
   //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
-  let parent = document.getElementsByTagName('ul')[0];
-  parent.innerHTML = ''; 
+  let parentList = document.getElementsByTagName('ul')[0];
+  parentList.innerHTML = ''; 
 
   data.forEach(category => {
     let child = document.createElement('li');
@@ -39,7 +45,7 @@ const drawData = (data) => {
     child.innerText = category.name;
     child.setAttribute('data-id', category.id)
     child.classList.add('list-group-item');
-    parent.appendChild(child);
+    parentList.appendChild(child);
   })
 
   const items = document.querySelectorAll('.list-group-item');
@@ -51,11 +57,8 @@ const drawData = (data) => {
         if (this.classList.contains('list-group-item-primary')) {
           // Quitamos la clase activa y reseteamos el selectedId
           this.classList.remove('list-group-item-primary');
-          selectedId = null;
-          deleteButton.disabled = true;
-
-          //se limpia hash si no hay categoria seleccionada
-          window.location.hash = '';
+          
+          clearSelection();
           
         } else {
           
@@ -70,9 +73,7 @@ const drawData = (data) => {
           // hash de ruta modificado
           window.location.hash = `/${selectedId}`
 
-          getListSites(selectedId).then(data => {
-            drawSites(data);
-          });
+          api.getListSites(selectedId, drawSites);
         }
     });
   });
@@ -83,19 +84,51 @@ const drawData = (data) => {
 
 //Función para habilitar/deshabilitar botón de enviar
 function checkName() {
-  if(document.addcategory.category.value === '' ) {
-    document.addcategory.send.disabled = true
+
+  const categoryInput = document.querySelector('#category');
+  const submitButton = document.querySelector('#submit-btn');
+
+  if(categoryInput.value === '' ) {
+    submitButton.disabled = true
   } else {
-    document.addcategory.send.disabled = false
+    submitButton.disabled = false
   }
 }
 
+function redirectToAddPage() {
+  if (selectedId) {
+    location.href = 'addpage.html#/' + selectedId;
+  } else {
+    console.log('selectedId no tiene valor');
+  }
+}
+
+function clearSelection() {
+  selectedId = null;
+  deleteButton.disabled = true;
+
+  //se limpia hash si no hay categoria seleccionada
+  window.location.hash = '';
+
+  const parentTable = document.getElementsByTagName('tbody')[0];
+  parentTable.innerHTML = '';
+}
+
+//Evento para añadir página asociada a un ID de categoria
+const addButton = document.querySelector('#add-site');
+addButton.addEventListener('click', redirectToAddPage);
+
+
 //Evento de envío de formulario
-const submitButton = document.querySelector("#submit-btn");
-submitButton.addEventListener("click", (event) => {
+formCategory.addEventListener('submit', function (event) {
     event.preventDefault();
-    postCategory();
+
+    const categoryName = document.querySelector("#category").value;
+    api.postCategory(categoryName, drawData);
+    deleteButton.disabled = true;
+    formCategory.reset();
 });
+
 
 
 //Evento de eliminar categoria
@@ -103,16 +136,18 @@ const deleteButton = document.querySelector("#del-btn");
 deleteButton.addEventListener('click', (event) => {
   event.preventDefault();
 
-  deleteCategory(selectedId);
-})
+  api.deleteCategory(selectedId, drawData)
+  clearSelection();
+  
+});
 
 
 //Mostrar los Sites
 const drawSites = (categoryId) => {
 
   //Limpiar contenido de padre para que cuando actualice lista no se pinte de nuevo
-  let parent = document.getElementsByTagName('tbody')[0];
-  parent.innerHTML = ''; 
+  let parentTable = document.getElementsByTagName('tbody')[0];
+  parentTable.innerHTML = ''; 
 
   const {
     sites
@@ -128,7 +163,7 @@ const drawSites = (categoryId) => {
     let createSite = document.createElement('td');
     let actions = document.createElement('td');
 
-    parent.appendChild(trSite)
+    parentTable.appendChild(trSite)
     
     
     nameSite.innerText = site.name;
@@ -155,16 +190,12 @@ const drawSites = (categoryId) => {
         event.preventDefault();
 
         const siteId = deleteSiteLink.getAttribute('data-id');
-        deleteSite(siteId).then(() => {
-          
-          getListSites(selectedId).then(data => {
-            drawSites(data);
-          });
-        });
+        api.deleteSite(siteId, selectedId, drawSites);
       });
     });
-  })
-}
+  });
+};
+
 
 
 
